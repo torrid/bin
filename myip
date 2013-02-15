@@ -1,0 +1,5 @@
+#!/bin/bash
+
+wget -t 5 -q -O - http://checkip.dyndns.org/ | sed -e 's#^.*: *##;s#[^0-9\.].*$##'
+# # curl -s -u $USER:$PASS http://$DDWRT/Status_Internet.asp | grep ipinfo  | cut -f 2 -d: | cut -f 1 -d\<
+
