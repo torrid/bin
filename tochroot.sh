@@ -11,21 +11,19 @@ mypath=$(dirname "$me")
 echo "# $me - $mypath" 
 
 
-# mount | grep -q "/usr/src" || mount /dev/Schlonz/Kernels /usr/src/
-# mount --bind /usr/src/ $mypath/usr/src/
-# mount | grep -q "var/portage" || mount /dev/Virtuals/Portage $mypath/var/portage
-
 mkdir -p $mypath/dev $mypath/sys $mypath/proc
 
 chroot $mypath /bin/mount -t proc none /proc
 chroot $mypath /bin/mount -t sysfs none /sys
-/bin/mount --rbind /dev $mypath/dev
-cat /proc/mounts > $mypath/etc/mtab 
+               /bin/mount --rbind /dev $mypath/dev
+chroot $mypath /bin/mount -o mode=620,gid=5 -t devpts /dev/ptmx /dev/pts
+chroot $mypath cat /proc/mounts > /etc/mtab
 cp /etc/resolv.conf $mypath/etc/
+
 chroot $mypath /bin/bash - 
+
+umount -l $mypath/dev/pts
 umount -l $mypath/dev
 umount -l $mypath/sys
 umount -l $mypath/proc
-
-
 
